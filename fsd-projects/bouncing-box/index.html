@@ -18,14 +18,14 @@
         /* Change me! */
         left: 0px;
       }
+    
+.board {
 
-      .board {
-        height: 100vh;
+        height: 100vh; 
       }
-    </style>
-    <!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+        </style> 
+      <!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
   </head>
-
   <body class="board">
     <!-- HTML for the box -->
     <div class="box">?</div>
@@ -69,9 +69,9 @@
         //////////////////////////////////////////////////////////////////
 
         // TODO 2 - Variable declarations
-        var positionX = 0
-        var points = 0
-        var speed = 10
+        var positionX = 0;
+        var points = 0;
+        var speed = 10;
 
 
 
@@ -81,13 +81,16 @@
          * If the box drifts off the screen, turn it around!
          */
         function update () {
-           moveBoxTo (positionX) 
-          positionX = positionX + 10
-        
-
-         speed *= -1 
+       moveBoxTo (positionX) 
+          positionX=positionX + speed;
+        if (positionX > boardWidth) {
+          speed *=-1
+        }
+        if (positionX < 0 ) {
+          speed *= -1;
         }
 
+      }
         /**
          * This Function will be called each time the box is clicked.
          * Each time it is called, it should perform each of the following actions:
@@ -98,13 +101,20 @@
         function handleBoxClick () {
           positionX = 0;
         changeBoxText (points)
-        points ++ 
-
+        points ++;
+        speed = 3* points + 10;
         }
 
         speed = speed + 3;
         
-      })();
-    </script>
+    
+ 
+      } ) ()
+        </script>
+
   </body>
-</html>
+
+
+</script>
+</html>1
+
