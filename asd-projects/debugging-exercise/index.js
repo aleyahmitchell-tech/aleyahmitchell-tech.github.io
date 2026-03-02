@@ -112,7 +112,7 @@ function update() {
 
 function moveGhost(ghost) {
   // FIX (logic): was overwriting x instead of moving it
-  ghost.x = ghost.speedX;
+  ghost.x += ghost.speedX;
   ghost.y += ghost.speedY;
 }
 
@@ -170,9 +170,9 @@ function updateOrientation(ghost) {
   }
 
   if (ghost.speedY > 0) {
-    scaleY = -1;
+  scaleY = -1;
   } else if (ghost.speedY < 0) {
-    scaleY = 1;
+  scaleY = 1;
   }
 
   $(ghost.id).css("transform", `scaleX(${scaleX}) scaleY(${scaleY})`);
@@ -204,11 +204,11 @@ function startProgram() {
   var countdownInterval = setInterval(function () {
     countdownSeconds--;
     if (countdownSeconds > 0) {
-      $countdown.text("Starting in: " + countdownSeconds);
-    } else {
-      $countdown.text("Go!");
-      clearInterval(countdownInterval);
-    }
+  $countdown.text("Starting in: " + countdownSeconds);
+  } else {
+  $countdown.text("Go!");
+  clearInterval(countdownInterval);
+  }
   }, 1000);
 
   setTimeout(startInterval, initialDelay);
@@ -216,7 +216,6 @@ function startProgram() {
   function startInterval() {
     setInterval(update, 1000 / FPS);
     $countdown.remove();
-  }
 }
-
+}
 });
