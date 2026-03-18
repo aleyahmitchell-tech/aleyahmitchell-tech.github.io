@@ -14,7 +14,14 @@ var score = 0; // variable to keep track of the score
 var started = false; // variable to keep track of whether the game has started
 
 // TODO 4, Part 1: Create the apple variable
+var apple = {}; 
+apple.element = $('<div>'),addClass("apple"),appendTo(board);
+var randomPosition = getRandomAvailablePosition();
+apple.row = randomPosition.row;
+apple.column = randomPosition.column;
+repositionSquare(apple);
 
+makeApple();
 
 // TODO 5, Part 1: Create the snake variable
 
