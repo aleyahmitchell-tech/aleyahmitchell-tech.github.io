@@ -210,6 +210,23 @@ There are two ways to open your project with **Live Server**:
      ```
    - This will help you confirm that key presses are being registered correctly.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 <table style="width: 80%; margin-left: auto; margin-right: auto; border-collapse: collapse; margin-top: 15px; background-color: #2c2c2c; border: 1px solid #444; border-radius: 8px; overflow: hidden;">
