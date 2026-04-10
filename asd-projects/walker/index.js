@@ -1,96 +1,140 @@
 /* global $, sessionStorage */
 
 $(document).ready(runProgram); // wait for the HTML / CSS elements of the page to fully load, then execute runProgram()
-  
 function runProgram(){
-  ////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////// SETUP /////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////// SETUP /////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-  // Constant Variables
-  var FRAME_RATE = 60;
-  var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
-  const KEY = {
-  ENTER: 13,
-  LEFT: 37,
-  UP: 38,
-  RIGHT: 39,
-  DOWN: 40,
+// Constant Variables
+var FRAME_RATE = 60;
+var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
+var walker = {
+x: 0,
+y: 0,
+speedX: 0,
+speedY: 0
 };
-  // Game Item Objects
-  var walker = {
-    x: 0,
-    y: 0,
-    speedX: 0,
-    speedY: 0
-  };
+// Game Item Objects
+const KEY = {
+ENTER: 13,
+LEFT: 37,
+UP: 38,
+RIGHT: 39,
+DOWN: 40,
+};
 
-  // one-time setup
-  var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
+// one-time setup
+var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL); // execute newFrame every 0.0166 seconds (60 Frames per second)
 
-  /* 
-  This section is where you set up event listeners for user input.
-  For example, if you wanted to handle a click event on the document, you would replace 'eventType' with 'click', and if you wanted to execute a function named 'handleClick', you would replace 'handleEvent' with 'handleClick'.
+/*
+This section is where you set up event listeners for user input.
+For example, if you wanted to handle a click event on the document, you would replace 'eventType' with 'click', and if you wanted to execute a function named 'handleClick', you would replace 'handleEvent' with 'handleClick'.
 
-  Note: You can have multiple event listeners for different types of events.
-  */
-  $(document).on("keydown", handleKeyDown);                          
+Note: You can have multiple event listeners for different types of events.
+*/
+$(document).on('keydown', handleKeyDown);
+$(document).on('keyup', handleKeyUp);
 
-  ////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////// CORE LOGIC ///////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////// CORE LOGIC ///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-  /* 
-  On each "tick" of the timer, a new frame is dynamically drawn using JavaScript
-  by calling this function and executing the code inside.
-  */
-  function newFrame() {
-    repositionGameItem();
-    // console.log(walker.x, walker.y);
-  }
-  
-  /* 
-  This section is where you set up the event handlers for user input.
-  For example, if you wanted to make an event handler for a click event, you should rename this function to 'handleClick', then write the code that should execute when the click event occurs.
-  
-  Note: You can have multiple event handlers for different types of events.
-  */
-  function handleKeyDown(event) {
-    // console.log(event.which);
-    if (event.which === KEY.LEFT) {
-      console.log("left pressed");
-    }
-    if (event.which === KEY.RIGHT) {
-      console.log("right pressed");
-    }
-    if (event.which === KEY.DOWN) {
-      console.log("down pressed");
-    }
-    if (event.which === KEY.UP) {
-      console.log("up pressed");
-    }
-  }
-  ////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////
+/*
+On each "tick" of the timer, a new frame is dynamically drawn using JavaScript
+by calling this function and executing the code inside.
+*/
+function newFrame() {
+repostionGameItem();
+wallCollision();
+redrawGameItem();
+}
+/*
+This section is where you set up the event handlers for user input.
+For example, if you wanted to make an event handler for a click event, you should rename this function to 'handleClick', then write the code that should execute when the click event occurs.
+Note: You can have multiple event handlers for different types of events.
+*/
+function handleKeyDown(event) {
+if (event.which === KEY.LEFT) {
+walker.speedX = -5;
+// walker.speedY = 0;
+}
+if (event.which === KEY.UP) {
+// walker.speedX = 0;
+walker.speedY = -5;
+}
+if (event.which === KEY.RIGHT) {
+walker.speedX = 5;
+// walker.speedY = 0;
+}
+if (event.which === KEY.DOWN) {
+// walker.speedX = 0;
+walker.speedY = 5;
+}
+}
 
-  function repositionGameItem() {
-    walker.x = walker.x + walker.speedX;
-    walker.y = walker.y + walker.speedY;
-  }
+function handleKeyUp(event) {
+if (event.which === 37 || event.which ===39) {
+walker.speedX = 0;
+}
+if (event.which === 38 || event.which === 40) {
+walker.speedY = 0;
+}
 
-  function endGame() {
-    // stop the interval timer
-    clearInterval(interval);
+}
 
-    // turn off event handlers
-    $(document).off();
-  }
-  
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function repostionGameItem() {
+walker.x = walker.x + walker.speedX;
+walker.y = walker.y + walker.speedY;
 }
 
 function redrawGameItem() {
-  $("#walker").css("left", walker.x);
-  $("walker").css("top", walker.y);
+$("#walker").css("left", walker.x);
+$("#walker").css("top", walker.y);
 }
 
+
+
+function wallCollision() {
+var boardWidth = $("#board").width();
+var boardHeight = $("#board").height();
+var walkerWidth = $("#walker").width();
+var walkerHeight = $("#walker").height();
+
+// LEFT wall
+if (walker.x < 0) {
+walker.x = 0;
+}
+
+// RIGHT wall
+if (walker.x > boardWidth - walkerWidth) {
+walker.x = boardWidth - walkerWidth;
+}
+
+// TOP wall
+if (walker.y < 0) {
+walker.y = 0;
+}
+
+// BOTTOM wall
+if (walker.y > boardHeight - walkerHeight) {
+walker.y = boardHeight - walkerHeight;
+}
+}
+
+
+function endGame() {
+// stop the interval timer
+clearInterval(interval);
+
+// turn off event handlers
+$(document).off();
+}
+}
